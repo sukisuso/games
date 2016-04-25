@@ -1,10 +1,21 @@
-var http = require('http');
+var express = require('express');
+var app = express();
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
 
-var port = (process.env.PORT || process.env.VCAP_APP_PORT || 8888);
+app.use(express.static(__dirname + '/webapp'));
+app.get('/', function(req, res){
+	
+  res.sendFile(__dirname + '/index.html');
+});
 
-http.createServer(function (req, res) {
-	res.writeHead(200, {'Content-Type': 'text/plain'});
-	res.end('Hello World!\n');
-}).listen(port);
 
-console.log('Server running at http://127.0.0.1:'+port);
+io.on('connection', function(socket){
+	 socket.on('chat message', function(msg){
+	    io.emit('chat message', msg);
+	  });
+});
+
+http.listen(3000, function(){
+  console.log('listening on CONQ:3000 app');
+});
