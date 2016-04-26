@@ -53,9 +53,14 @@
 	</style>
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
 	<script src="core/kinetic-v5.1.0.min.js"></script>
+	<script src="conqlib/socket.io.js"></script>
+	
 	<script src="core/gameData.js"></script>
 	<script src="core/paths.js"></script>
 	<script src="core/coordinates.js"></script>
+	
+	<script src="conqlib/conqlib.js"></script>
+	
 	<script src="core/risk.js"></script>
 	<script src="core/assetManager.js"></script>
 	<script src="core/main.js"></script>
@@ -69,6 +74,12 @@
 <div id="overlay">
 	<img src="resources/img/loading.gif">
 </div>
+
+	<script>
+      var socket = io();
+      socket.on('chat message', function(msg){
+      });
+	</script>
 
 </body>
 </html>

@@ -123,39 +123,15 @@ var Risk = {
             //when you make a bigger application you should move this functionality out from here, and maybe put these 'actions' in a seperate function/'class'
             (function(path, t, group) {
                 group.on('mouseover', function() {
-                    path.setFill('#eee');
-                    path.setOpacity(0.3);
-                    group.moveTo(Risk.topLayer);
-                    Risk.topLayer.drawScene();
+                	Cnq.onTerritoryOver(path, group);
                 });
 
                 group.on('mouseout', function() {
-                    path.setFill(Risk.Settings.colors[Risk.Territories[t].color]);
-                    path.setOpacity(0.4);
-                    group.moveTo(Risk.mapLayer);
-                    Risk.topLayer.draw();
+                	Cnq.onTerritoryOut(path, group);
                 });
 
                 group.on('click', function() {
-                    console.log(path.attrs.id);
-                    location.hash = path.attrs.id;
-
-                    var imgObj = new Image();
-                    imgObj.src = 'resources/img/castle.png';
-                    imgObj.onload = function () {
-                                
-                            var img = new Kinetic.Image({
-                                x:CenterPoints[location.hash.substring(1, location.hash.length)].x,
-                                y:CenterPoints[location.hash.substring(1, location.hash.length)].y,
-                                image: imgObj,
-                                alpha: 0.5
-                            });
-
-                            layer = new Kinetic.Layer();
-                            layer.add(img)
-                            Risk.stage.add(layer);
-                    };
-
+                   Cnq.onTerritoryClick(path, group);
                 });
             })(path, t, group);
         }               
