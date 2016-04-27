@@ -14,8 +14,8 @@ io.on('connection', function(socket){
 	
 	console.log('userconected');
 	
-	 socket.on('chat message', function(msg){
-	    io.emit('chat message', msg);
+	 socket.on('game message', function(msg){
+	    io.emit('game message', msg);
 	  });
 	 
 	 socket.on('disconnect', function () {
@@ -45,4 +45,4 @@ io.sockets.on('connection', function(socket) {
       allClients.splice(i, 1);
    });
 });
- */*/
+ */

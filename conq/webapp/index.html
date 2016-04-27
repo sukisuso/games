@@ -77,7 +77,8 @@
 
 	<script>
       var socket = io();
-      socket.on('chat message', function(msg){
+      socket.on('game message', function(msg){
+    	  Cnq.Router(msg);
       });
 	</script>
 

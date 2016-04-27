@@ -114,6 +114,7 @@ var Risk = {
             var group = new Kinetic.Group();
 
             //We have to set up a group for proper mouseover on territories and sprite name images 
+            group.setId("primaryGroup")
             group.add(path);
             group.add(nameImg);
             Risk.mapLayer.add(group);

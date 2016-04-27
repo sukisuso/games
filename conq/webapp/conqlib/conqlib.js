@@ -9,12 +9,13 @@ Cnq['locationSelected'] = "";
 Cnq['previousSelected'] = "";
 
 Cnq['onTerritoryClick'] = function(path , group){
+	
 	 console.log(path.attrs.id);
      location.hash = path.attrs.id;
      Cnq.previousSelected= Cnq.locationSelected;
      Cnq.locationSelected = path.attrs.id;
      
-     socket.emit('chat message',path.attrs.id);
+     socket.emit('game message',path.attrs.id);
      
      
      if(Cnq.previousSelected != ""){
@@ -23,7 +24,7 @@ Cnq['onTerritoryClick'] = function(path , group){
 			previous.setOpacity(0.4);
 	 }
 
-    /* var imgObj = new Image();
+     /*var imgObj = new Image();
      imgObj.src = 'resources/img/castle.png';
      imgObj.onload = function () {
                  
@@ -40,10 +41,10 @@ Cnq['onTerritoryClick'] = function(path , group){
      };*/
      
      
-     path.setFill('#2E9AFE');
+   /*  path.setFill('#2E9AFE');
      path.setOpacity(0.6);
      group.moveTo(Risk.topLayer);
-     Risk.topLayer.drawScene();
+     Risk.topLayer.drawScene();*/
      
 }
 
@@ -66,4 +67,18 @@ Cnq['onTerritoryOut'] = function (path, group){
 		group.moveTo(Risk.mapLayer);
 		Risk.topLayer.draw();
 	}
+}
+
+
+
+Cnq.Router = function(msg){
+	
+	//var group = Risk.stage.find("#primaryGroup")[0];
+	var clicked =  Risk.stage.find("#"+msg)[0];
+	var group = clicked.getParent();
+	
+	clicked.setFill('#2E9AFE');
+	clicked.setOpacity(0.6);
+	group.moveTo(Risk.topLayer);
+	 Risk.topLayer.drawScene();
 }
