@@ -3,10 +3,13 @@
  */
 
 var UserX = {};
+UserX['id'] = new Date().getSeconds();
+UserX['money'] = null;
 
 var Cnq = {};
 Cnq['locationSelected'] = "";
 Cnq['previousSelected'] = "";
+Cnq['territoriSelected'] = [];
 
 Cnq['onTerritoryClick'] = function(path , group){
 	
@@ -15,7 +18,7 @@ Cnq['onTerritoryClick'] = function(path , group){
      Cnq.previousSelected= Cnq.locationSelected;
      Cnq.locationSelected = path.attrs.id;
      
-     socket.emit('game message',path.attrs.id);
+     Cnq.SendMsg('game message',{userId:UserX['id'], type:'click', territory:path.attrs.id});
      
      
      if(Cnq.previousSelected != ""){
@@ -41,10 +44,10 @@ Cnq['onTerritoryClick'] = function(path , group){
      };*/
      
      
-   /*  path.setFill('#2E9AFE');
+     path.setFill('#2E9AFE');
      path.setOpacity(0.6);
      group.moveTo(Risk.topLayer);
-     Risk.topLayer.drawScene();*/
+     Risk.topLayer.drawScene();
      
 }
 
@@ -71,14 +74,23 @@ Cnq['onTerritoryOut'] = function (path, group){
 
 
 
-Cnq.Router = function(msg){
-	
-	//var group = Risk.stage.find("#primaryGroup")[0];
-	var clicked =  Risk.stage.find("#"+msg)[0];
-	var group = clicked.getParent();
-	
-	clicked.setFill('#2E9AFE');
-	clicked.setOpacity(0.6);
-	group.moveTo(Risk.topLayer);
-	 Risk.topLayer.drawScene();
+Cnq.Router = function(msgAux){
+	var  msg = JSON.parse(msgAux);
+	if(msg.userId !== UserX['id']){
+		
+		
+		//var group = Risk.stage.find("#primaryGroup")[0];
+		var clicked =  Risk.stage.find("#"+msg.territory)[0];
+		var group = clicked.getParent();
+		
+		clicked.setFill('#2E9AFE');
+		clicked.setOpacity(0.6);
+		group.moveTo(Risk.topLayer);
+		 Risk.topLayer.drawScene();
+	}
+}
+
+Cnq.SendMsg = function (path, obj){
+	debugger
+	 socket.emit(path ,JSON.stringify(obj));
 }
