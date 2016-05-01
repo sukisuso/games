@@ -78,7 +78,9 @@ Cnq.Router = function(msgAux){
 	var  msg = JSON.parse(msgAux);
 	if(msg.userId !== UserX['id']){
 		
-		
+		if( msg.type === 'new_Conection'){
+			debugger
+		}
 		//var group = Risk.stage.find("#primaryGroup")[0];
 		var clicked =  Risk.stage.find("#"+msg.territory)[0];
 		var group = clicked.getParent();
@@ -91,6 +93,5 @@ Cnq.Router = function(msgAux){
 }
 
 Cnq.SendMsg = function (path, obj){
-	debugger
 	 socket.emit(path ,JSON.stringify(obj));
 }

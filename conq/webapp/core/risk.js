@@ -68,10 +68,7 @@ var Risk = {
 
             //Using a sprite image for territory names
             //see: drawImage() -- https://developer.mozilla.org/en-US/docs/Canvas_tutorial/Using_images , and see Kinetic.Image() docs for more
-            var sprite = new Image();
-            sprite.src = 'resources/img/names.png';
             var territoryNameImg = new Kinetic.Image({
-                //image: sprite,
                 x: FontDestinationCoords[id].x,
                 y: FontDestinationCoords[id].y,
                 width: FontSpriteCoords[id].sWidth, //'destiantion Width' 
