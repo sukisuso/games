@@ -5,6 +5,7 @@
 var UserX = {};
 UserX['id'] = new Date().getSeconds();
 UserX['money'] = null;
+UserX['rivalId'] = null;
 
 var Cnq = {};
 Cnq['locationSelected'] = "";
@@ -79,16 +80,24 @@ Cnq.Router = function(msgAux){
 	if(msg.userId !== UserX['id']){
 		
 		if( msg.type === 'new_Conection'){
-			debugger
+			
+			UserX.rivalId = msg.UserId;
+			Cnq.SendMsg('game message', {userId : UserX.id,	type : 'start_game', other:UserX.rivalId});
+			 readyState();
+			
+		}else if(msg.type === 'start_game'){
+			 readyState();
 		}
+		
+		
 		//var group = Risk.stage.find("#primaryGroup")[0];
-		var clicked =  Risk.stage.find("#"+msg.territory)[0];
+		/*var clicked =  Risk.stage.find("#"+msg.territory)[0];
 		var group = clicked.getParent();
 		
 		clicked.setFill('#2E9AFE');
 		clicked.setOpacity(0.6);
 		group.moveTo(Risk.topLayer);
-		 Risk.topLayer.drawScene();
+		 Risk.topLayer.drawScene();*/
 	}
 }
 
