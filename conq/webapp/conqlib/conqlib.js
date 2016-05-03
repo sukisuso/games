@@ -78,17 +78,19 @@ Cnq['onTerritoryOut'] = function (path, group){
 Cnq.Router = function(msgAux){
 	var  msg = JSON.parse(msgAux);
 	if(msg.userId !== UserX['id']){
-		
+		debugger
 		if( msg.type === 'new_Conection'){
 			
-			UserX.rivalId = msg.UserId;
+			UserX.rivalId = msg.userId;
 			Cnq.SendMsg('game message', {userId : UserX.id,	type : 'start_game', other:UserX.rivalId});
 			 readyState();
 			
-		}else if(msg.type === 'start_game'){
-			 readyState();
+		}else if(msg.type === 'start_game' && msg.other == UserX.id){
+			UserX.rivalId = msg.userId;
+			waitingTurn();
+		}else if (msg.type === 'new_Turno' && msg.userId == UserX.rivalId){
+			readyState('Tu turno...', 'Continuar');
 		}
-		
 		
 		//var group = Risk.stage.find("#primaryGroup")[0];
 		/*var clicked =  Risk.stage.find("#"+msg.territory)[0];
@@ -103,4 +105,10 @@ Cnq.Router = function(msgAux){
 
 Cnq.SendMsg = function (path, obj){
 	 socket.emit(path ,JSON.stringify(obj));
+}
+
+Cnq.finishTurn = function () {
+	Cnq.SendMsg('game message', {userId : UserX.id,	type : 'new_Turno'});
+	waitingTurn();
+	maskGame();
 }

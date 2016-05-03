@@ -123,6 +123,13 @@ html, body {
 	color: white;
 }
 
+.title-black {
+	padding-left:25px;
+	font-family: conquerttf;
+	font-size:35px;
+	color: black;
+}
+
 .btnBul {
   background: #d94734;
   background-image: -webkit-linear-gradient(top, #d94734, #ff0d0d);
