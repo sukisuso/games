@@ -78,18 +78,27 @@ Cnq['onTerritoryOut'] = function (path, group){
 Cnq.Router = function(msgAux){
 	var  msg = JSON.parse(msgAux);
 	if(msg.userId !== UserX['id']){
-		debugger
-		if( msg.type === 'new_Conection'){
-			
+
+		if( msg.type === 'new_Conection' && UserX.rivalId == null){
 			UserX.rivalId = msg.userId;
 			Cnq.SendMsg('game message', {userId : UserX.id,	type : 'start_game', other:UserX.rivalId});
-			 readyState();
+			 
 			
 		}else if(msg.type === 'start_game' && msg.other == UserX.id){
 			UserX.rivalId = msg.userId;
-			waitingTurn();
+
 		}else if (msg.type === 'new_Turno' && msg.userId == UserX.rivalId){
 			readyState('Tu turno...', 'Continuar');
+			
+		}else if(msg.type === 'init_game'){
+			//Pintar Territorios
+			Cnq.paintFirtStep(msg.idFirstPlayer == UserX.id, msg);
+			
+			if(msg.idFirstPlayer == UserX.id){
+				readyState();
+			}else{
+				waitingTurn();
+			}
 		}
 		
 		//var group = Risk.stage.find("#primaryGroup")[0];
@@ -111,4 +120,36 @@ Cnq.finishTurn = function () {
 	Cnq.SendMsg('game message', {userId : UserX.id,	type : 'new_Turno'});
 	waitingTurn();
 	maskGame();
+}
+
+
+Cnq.pintarLocal = function (id){
+    var clicked =  Risk.stage.find("#"+id)[0];
+	var group = clicked.getParent();
+	
+	clicked.setFill('#2E9AFE');
+	clicked.setOpacity(0.6);
+	group.moveTo(Risk.topLayer);
+	Risk.topLayer.drawScene();
+}
+
+Cnq.pintarRival = function (id){
+	var clicked =  Risk.stage.find("#"+id)[0];
+	var group = clicked.getParent();
+	
+	clicked.setFill('#ff0000');
+	clicked.setOpacity(0.6);
+	group.moveTo(Risk.topLayer);
+	Risk.topLayer.drawScene();
+}
+
+
+Cnq.paintFirtStep = function (local, obj){
+	if(local){ 
+		Cnq.pintarLocal(obj.firstPlayerTerr);
+		Cnq.pintarRival(obj.secondPlayerTerr);
+	}else{
+		Cnq.pintarLocal(obj.secondPlayerTerr);
+		Cnq.pintarRival(obj.firstPlayerTerr);
+	}
 }
