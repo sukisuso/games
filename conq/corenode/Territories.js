@@ -1,10 +1,10 @@
 /**
  * 
  */
-var TerritoryNames = ['Alaska', 'North West Territory', 'Alberta', 'Ontario','Greenland', 'Quebec','Western United States', 'Eastern United States', 'Central America',
-                      'Peru', 'Brazil', 'Venezuela', 'Argentina','North Africa', 'Egypt', 'Congo','East Africa', 'South Africa','Iceland', 'Great Britain','Western Europe',
-                       'Northern Europe', 'Southern Europe', 'Scandinavia', 'Madagascar', 'Middle East', 'Afghanistan', 'Ural', 'India','Siam', 'China','Mongolia',
-                       'Irkutsk','Yakutsk', 'Siberia', 'Kamchatka','Indonesia', 'New Guinea', 'Western Australia', 'Eastern Australia'];
+var TerritoryNames = ['Alaska', 'NorthWestTerritory', 'Alberta', 'Ontario','Greenland', 'Quebec','WesternUnitedStates', 'EasternUnitedStates', 'CentralAmerica',
+                      'Peru', 'Brazil', 'Venezuela', 'Argentina','NorthAfrica', 'Egypt', 'Congo','EastAfrica', 'SouthAfrica','Iceland', 'GreatBritain','WesternEurope',
+                       'NorthernEurope', 'SouthernEurope', 'Scandinavia', 'Madagascar', 'MiddleEast', 'Afghanistan', 'Ural', 'India','Siam', 'China','Mongolia',
+                       'Irkutsk','Yakutsk', 'Siberia', 'Kamchatka','Indonesia', 'NewGuinea', 'WesternAustralia', 'EasternAustralia'];
 
 
 var getCoupleTerritories = function (){

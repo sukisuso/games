@@ -31,7 +31,7 @@ function initState(){
 function readyState(msg1, msg2){
 	if(msg1 === undefined){msg1 = 'Partida preparada';}
 	if(msg2 === undefined){msg2 = 'Start';}
-	$('#modalMesage')[0].innerHTML= "<center><p>"+msg1+"</p></br><button class='btnBul' onclick='unmaskGame();'/>"+msg2+"</center>";
+	$('#modalMesage')[0].innerHTML= "<center><p>"+msg1+"</p></br><button class='btnBul' onclick='unmaskGame(); Cnq.yourTurn();'/>"+msg2+"</center>";
 }
 
 function waitingTurn(){

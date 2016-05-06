@@ -21,8 +21,6 @@ app.get('/', function(req, res){
 
 io.on('connection', function(socket){
 	
-	console.log('userconected');
-	
 	 socket.on('game message', function(msg){
 	    io.emit('game message', msg);
 

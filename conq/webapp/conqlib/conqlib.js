@@ -4,16 +4,22 @@
 
 var UserX = {};
 UserX['id'] = new Date().getSeconds();
-UserX['money'] = null;
+UserX['money'] = 1;
 UserX['rivalId'] = null;
+UserX['localTerritories'] = [];
+UserX['rivalTerritories'] = [];
 
 var Cnq = {};
 Cnq['locationSelected'] = "";
 Cnq['previousSelected'] = "";
-Cnq['territoriSelected'] = [];
+Cnq['blink'] = null;
 
 Cnq['onTerritoryClick'] = function(path , group){
-	
+	 
+	clearInterval(Cnq.blink);
+	Cnq.clearNeighbours(); 
+	 
+	 
 	 console.log(path.attrs.id);
      location.hash = path.attrs.id;
      Cnq.previousSelected= Cnq.locationSelected;
@@ -53,7 +59,7 @@ Cnq['onTerritoryClick'] = function(path , group){
 }
 
 Cnq['onTerritoryOver'] = function (path, group){
-	if(path.attrs.id != Cnq.locationSelected){
+	if( !Cnq.terIsUsed(path.attrs.id)){
 		path.setFill('#eee');
 		path.setOpacity(0.3);
 		group.moveTo(Risk.topLayer);
@@ -64,7 +70,8 @@ Cnq['onTerritoryOver'] = function (path, group){
 
 
 Cnq['onTerritoryOut'] = function (path, group){
-	if(path.attrs.id != Cnq.locationSelected){
+	if( !Cnq.terIsUsed(path.attrs.id)){
+		
 		path.setFill(Risk.Settings.colors[Risk.Territories[t].color]);
 		path.setOpacity(0.4);
 		
@@ -117,6 +124,8 @@ Cnq.SendMsg = function (path, obj){
 }
 
 Cnq.finishTurn = function () {
+	clearInterval(Cnq.blink);
+	Cnq.clearNeighbours();
 	Cnq.SendMsg('game message', {userId : UserX.id,	type : 'new_Turno'});
 	waitingTurn();
 	maskGame();
@@ -146,10 +155,68 @@ Cnq.pintarRival = function (id){
 
 Cnq.paintFirtStep = function (local, obj){
 	if(local){ 
+		UserX.localTerritories.push(obj.firstPlayerTerr);
+		UserX.rivalTerritories.push(obj.secondPlayerTerr);
 		Cnq.pintarLocal(obj.firstPlayerTerr);
 		Cnq.pintarRival(obj.secondPlayerTerr);
 	}else{
+		UserX.localTerritories.push(obj.secondPlayerTerr);
+		UserX.rivalTerritories.push(obj.firstPlayerTerr);
 		Cnq.pintarLocal(obj.secondPlayerTerr);
 		Cnq.pintarRival(obj.firstPlayerTerr);
+	}
+}
+
+
+Cnq.terIsUsed = function (id){
+	var local = (UserX.localTerritories.indexOf(id) > -1);
+	var rival = (UserX.rivalTerritories.indexOf(id) > -1);
+	
+	return local || rival;
+}
+
+
+Cnq.yourTurn = function(){
+	var cont = 0;
+	Cnq.blink = setInterval(function(){ 
+		if(cont %2 == 0){
+			Cnq.paintBlink('#eefe', 0.3);
+		}else{
+			Cnq.clearNeighbours("#58ACFA",  0.3);
+		}
+		cont++;
+	}, 550);
+}
+
+Cnq.paintBlink = function (fill, opacity){
+	
+	for(var i in UserX.localTerritories){
+		for(var j in Neighbours[ UserX.localTerritories[i]]){
+			var id = Neighbours[ UserX.localTerritories[i]][j];
+			
+			var clicked =  Risk.stage.find("#"+id)[0];
+			var group = clicked.getParent();
+			
+			clicked.setFill(fill);
+			clicked.setOpacity(opacity);
+			group.moveTo(Risk.topLayer);
+			Risk.topLayer.drawScene();
+		}
+	}
+}
+
+Cnq.clearNeighbours = function (){
+	for(var i in UserX.localTerritories){
+		for(var j in Neighbours[ UserX.localTerritories[i]]){
+			var id = Neighbours[ UserX.localTerritories[i]][j];
+			
+			var clicked =  Risk.stage.find("#"+id)[0];
+			var group = clicked.getParent();
+			
+			clicked.setFill(Risk.Settings.colors ["yellow"]);
+			clicked.setOpacity(0.4);
+			group.moveTo(Risk.mapLayer);
+			Risk.topLayer.drawScene();
+		}
 	}
 }
