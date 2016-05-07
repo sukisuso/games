@@ -10,7 +10,7 @@ ASSET_MANAGER.downloadAll(function() {
 	Risk.init();
 	$("#overlay").fadeOut('slow');
 	maskGame();
-	initState()
+	initState();
 });
 
 
@@ -37,3 +37,4 @@ function readyState(msg1, msg2){
 function waitingTurn(){
 	$('#modalMesage')[0].innerHTML= "<center><p>Esperando turno...</p></br><img src=resources/img/load.gif></center>";
 }
+

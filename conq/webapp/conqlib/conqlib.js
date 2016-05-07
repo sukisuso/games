@@ -17,15 +17,17 @@ Cnq['blink'] = null;
 Cnq['onTerritoryClick'] = function(path , group){
 	 
 	clearInterval(Cnq.blink);
-	Cnq.clearNeighbours(); 
+	Cnq.clearNeighbours();
+	Cnq.repaintLocal();
+	
 	 
-	 
-	 console.log(path.attrs.id);
      location.hash = path.attrs.id;
      Cnq.previousSelected= Cnq.locationSelected;
      Cnq.locationSelected = path.attrs.id;
      
-     Cnq.SendMsg('game message',{userId:UserX['id'], type:'click', territory:path.attrs.id});
+     UserX['localTerritories'].push(path.attrs.id);
+     
+   /*  Cnq.SendMsg('game message',{userId:UserX['id'], type:'click', territory:path.attrs.id});
      
      
      if(Cnq.previousSelected != ""){
@@ -51,11 +53,13 @@ Cnq['onTerritoryClick'] = function(path , group){
      };*/
      
      
-     path.setFill('#2E9AFE');
+    /* path.setFill('#2E9AFE');
      path.setOpacity(0.6);
      group.moveTo(Risk.topLayer);
-     Risk.topLayer.drawScene();
+     Risk.topLayer.drawScene();*/
      
+     Cnq.pintarLocal(path.attrs.id);
+     Cnq.yourTurn();
 }
 
 Cnq['onTerritoryOver'] = function (path, group){
@@ -126,6 +130,7 @@ Cnq.SendMsg = function (path, obj){
 Cnq.finishTurn = function () {
 	clearInterval(Cnq.blink);
 	Cnq.clearNeighbours();
+	Cnq.repaintLocal();
 	Cnq.SendMsg('game message', {userId : UserX.id,	type : 'new_Turno'});
 	waitingTurn();
 	maskGame();
@@ -184,6 +189,7 @@ Cnq.yourTurn = function(){
 		}else{
 			Cnq.clearNeighbours("#58ACFA",  0.3);
 		}
+		Cnq.repaintLocal();
 		cont++;
 	}, 550);
 }
@@ -192,15 +198,18 @@ Cnq.paintBlink = function (fill, opacity){
 	
 	for(var i in UserX.localTerritories){
 		for(var j in Neighbours[ UserX.localTerritories[i]]){
+			
 			var id = Neighbours[ UserX.localTerritories[i]][j];
-			
-			var clicked =  Risk.stage.find("#"+id)[0];
-			var group = clicked.getParent();
-			
-			clicked.setFill(fill);
-			clicked.setOpacity(opacity);
-			group.moveTo(Risk.topLayer);
-			Risk.topLayer.drawScene();
+			if(!UserX.localTerritories.indexOf(id) > -1){
+				
+				var clicked =  Risk.stage.find("#"+id)[0];
+				var group = clicked.getParent();
+				
+				clicked.setFill(fill);
+				clicked.setOpacity(opacity);
+				group.moveTo(Risk.topLayer);
+				Risk.topLayer.drawScene();
+			}
 		}
 	}
 }
@@ -218,5 +227,12 @@ Cnq.clearNeighbours = function (){
 			group.moveTo(Risk.mapLayer);
 			Risk.topLayer.drawScene();
 		}
+	}
+}
+
+Cnq.repaintLocal = function(){
+	for(var i in UserX.localTerritories){
+		var id =  UserX.localTerritories[i];
+		Cnq.pintarLocal(id);
 	}
 }

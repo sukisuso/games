@@ -160,9 +160,6 @@ html, body {
   text-decoration: none;
 }
 
-
-
-
 .next {
 	-moz-box-shadow: 0px 1px 0px 0px #1c1b18;
 	-webkit-box-shadow: 0px 1px 0px 0px #1c1b18;
@@ -186,6 +183,7 @@ html, body {
 	font-size:25px;
 	font-weight:bold;
 	padding:20px 29px;
+	margin-left:15px;
 	text-decoration:none;
 	text-shadow:0px 1px 0px #ffffff;
 }
@@ -203,3 +201,5 @@ html, body {
 	position:relative;
 	top:1px;
 }
+
+
