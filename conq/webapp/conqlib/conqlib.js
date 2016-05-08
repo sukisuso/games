@@ -15,19 +15,33 @@ Cnq['previousSelected'] = "";
 Cnq['blink'] = null;
 
 Cnq['onTerritoryClick'] = function(path , group){
-	 
-	clearInterval(Cnq.blink);
-	Cnq.clearNeighbours();
-	Cnq.repaintLocal();
 	
-	 
-     location.hash = path.attrs.id;
-     Cnq.previousSelected= Cnq.locationSelected;
-     Cnq.locationSelected = path.attrs.id;
+	if(UserX['money'] > 0){
+		UserX['money'] --;
+		clearInterval(Cnq.blink);
+		Cnq.clearNeighbours();
+		Cnq.repaintLocal();
+		Cnq.repaintRival();
+		
+		 
+	     location.hash = path.attrs.id;
+	     Cnq.previousSelected= Cnq.locationSelected;
+	     Cnq.locationSelected = path.attrs.id;
+	     
+	     UserX['localTerritories'].push(path.attrs.id);
+	     
+	     
+	     Cnq.pintarLocal(path.attrs.id);
+	     if(UserX['money'] != 0){
+	     	Cnq.yourTurn();
+	     }
+	}else{
+		alert("No money!");
+	}
+	
+	Cnq.reloadMoneyValue();
      
-     UserX['localTerritories'].push(path.attrs.id);
-     
-   /*  Cnq.SendMsg('game message',{userId:UserX['id'], type:'click', territory:path.attrs.id});
+     /*  Cnq.SendMsg('game message',{userId:UserX['id'], type:'click', territory:path.attrs.id});
      
      
      if(Cnq.previousSelected != ""){
@@ -53,13 +67,10 @@ Cnq['onTerritoryClick'] = function(path , group){
      };*/
      
      
-    /* path.setFill('#2E9AFE');
+     /* path.setFill('#2E9AFE');
      path.setOpacity(0.6);
      group.moveTo(Risk.topLayer);
      Risk.topLayer.drawScene();*/
-     
-     Cnq.pintarLocal(path.attrs.id);
-     Cnq.yourTurn();
 }
 
 Cnq['onTerritoryOver'] = function (path, group){
@@ -75,10 +86,8 @@ Cnq['onTerritoryOver'] = function (path, group){
 
 Cnq['onTerritoryOut'] = function (path, group){
 	if( !Cnq.terIsUsed(path.attrs.id)){
-		
 		path.setFill(Risk.Settings.colors[Risk.Territories[t].color]);
 		path.setOpacity(0.4);
-		
 		group.moveTo(Risk.mapLayer);
 		Risk.topLayer.draw();
 	}
@@ -100,7 +109,8 @@ Cnq.Router = function(msgAux){
 
 		}else if (msg.type === 'new_Turno' && msg.userId == UserX.rivalId){
 			readyState('Tu turno...', 'Continuar');
-			
+			Cnq.calculateMoney();
+			Cnq.reloadMoneyValue();
 		}else if(msg.type === 'init_game'){
 			//Pintar Territorios
 			Cnq.paintFirtStep(msg.idFirstPlayer == UserX.id, msg);
@@ -111,15 +121,6 @@ Cnq.Router = function(msgAux){
 				waitingTurn();
 			}
 		}
-		
-		//var group = Risk.stage.find("#primaryGroup")[0];
-		/*var clicked =  Risk.stage.find("#"+msg.territory)[0];
-		var group = clicked.getParent();
-		
-		clicked.setFill('#2E9AFE');
-		clicked.setOpacity(0.6);
-		group.moveTo(Risk.topLayer);
-		 Risk.topLayer.drawScene();*/
 	}
 }
 
@@ -131,6 +132,7 @@ Cnq.finishTurn = function () {
 	clearInterval(Cnq.blink);
 	Cnq.clearNeighbours();
 	Cnq.repaintLocal();
+	Cnq.repaintRival();
 	Cnq.SendMsg('game message', {userId : UserX.id,	type : 'new_Turno'});
 	waitingTurn();
 	maskGame();
@@ -182,16 +184,20 @@ Cnq.terIsUsed = function (id){
 
 
 Cnq.yourTurn = function(){
-	var cont = 0;
-	Cnq.blink = setInterval(function(){ 
-		if(cont %2 == 0){
-			Cnq.paintBlink('#eefe', 0.3);
-		}else{
-			Cnq.clearNeighbours("#58ACFA",  0.3);
-		}
-		Cnq.repaintLocal();
-		cont++;
-	}, 550);
+	if(UserX['money'] > 0){
+		var cont = 0;
+		Cnq.blink = setInterval(function(){ 
+			if(cont %2 == 0){
+				Cnq.paintBlink('#eefe', 0.3);
+			}else{
+				Cnq.clearNeighbours("#58ACFA",  0.3);
+				Cnq.repaintRival();
+			}
+			Cnq.repaintLocal();
+			
+			cont++;
+		}, 550);
+	}
 }
 
 Cnq.paintBlink = function (fill, opacity){
@@ -235,4 +241,20 @@ Cnq.repaintLocal = function(){
 		var id =  UserX.localTerritories[i];
 		Cnq.pintarLocal(id);
 	}
+}
+
+Cnq.repaintRival = function(){
+	for(var i in UserX.rivalTerritories){
+		var id =  UserX.rivalTerritories[i];
+		Cnq.pintarRival(id);
+	}
+}
+
+Cnq.reloadMoneyValue = function () {
+	$('#moneyValue')[0].innerHTML = UserX.money;
+}
+
+Cnq.calculateMoney = function(){
+	UserX['money'] =  UserX.localTerritories.length;
+//	return UserX['money'];
 }

@@ -18,9 +18,16 @@
 
 <body>
 <h2 class="title">CONQUER</h2>
+	
+	<div class="content">
 	<center>
-		<div id="map" style="margin-top: 10px;"></div>
+		<div id="map" class="map" ></div>
 	</center>
+		<div class="right" >
+			<div class="title">Money</div>
+			<center><div class="numbertitle" id="moneyValue" data-bind="attr: UserX.money">0</div></center>
+		</div>
+	</div>
 
 	<div id="overlay">
 		<img src="resources/img/loading.gif">
@@ -48,6 +55,9 @@
 			type : 'new_Conection'
 		});
 	</script>
+	
+	
+	<!-- NavBar -->
 	
 </body>
 </html>

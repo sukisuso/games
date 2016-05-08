@@ -3,6 +3,11 @@
     src: url('ttf/TRON.TTF');
 }
 
+@font-face {
+    font-family: digittf;
+    src: url('ttf/DS-DIGIT.TTF');
+}
+
 html, body {
 	width: 100%;
 	height: 100%;
@@ -123,6 +128,13 @@ html, body {
 	color: white;
 }
 
+.numbertitle {
+	padding-left:25px;
+	font-family: digittf;
+	font-size:65px;
+	color: white;
+}
+
 .title-black {
 	padding-left:25px;
 	font-family: conquerttf;
@@ -183,9 +195,10 @@ html, body {
 	font-size:25px;
 	font-weight:bold;
 	padding:20px 29px;
-	margin-left:15px;
+	margin-right:35px;
 	text-decoration:none;
 	text-shadow:0px 1px 0px #ffffff;
+	float:right;
 }
 .next:hover {
 	background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #ccc2a6), color-stop(1, #eae0c2));
@@ -202,4 +215,16 @@ html, body {
 	top:1px;
 }
 
-
+.content{
+	 display: flex;
+}
+.right {
+    float:right;
+    left:100%;
+  height: 100px;
+}
+.map{
+	 float: left;
+      position: relative;
+	margin-top: 10px;
+}
