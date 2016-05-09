@@ -38,3 +38,27 @@ function waitingTurn(){
 	$('#modalMesage')[0].innerHTML= "<center><p>Esperando turno...</p></br><img src=resources/img/load.gif></center>";
 }
 
+function winStage(){
+	$('#modalMesage')[0].innerHTML= "<center><p>VICTORIA</p></center>";
+}
+
+function loseStage(){
+	$('#modalMesage')[0].innerHTML= "<center><p>DERROTA</p></center>";
+}
+
+/*UTILS*/
+
+function remove(arr, what) {
+    var found = arr.indexOf(what);
+
+    while (found !== -1) {
+        arr.splice(found, 1);
+        found = arr.indexOf(what);
+    }
+}
+
+function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+
