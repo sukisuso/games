@@ -1,6 +1,6 @@
 
 
-
+PNotify.prototype.options.delay = 2500;
 var ASSET_MANAGER = new AssetManager();
 
 ASSET_MANAGER.queueDownload('resources/img/map_grey.jpg');

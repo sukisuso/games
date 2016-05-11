@@ -15,7 +15,7 @@ Cnq['locationSelected'] = "";
 Cnq['blink'] = null;
 
 Cnq['onTerritoryClick'] = function(path , group){
-	
+	var battle = true;
 	if(UserX['money'] > 0 && Cnq.terIsNeighbour(path.attrs.id)){
 		UserX['money'] --;
 		
@@ -24,7 +24,7 @@ Cnq['onTerritoryClick'] = function(path , group){
 		 
 	     if(Cnq.terIsRival(Cnq.locationSelected)){
 	    	 //SIMULATE BATLE.
-	    	 Cnq.conquestBatle(Cnq.locationSelected);
+	    	 battle = Cnq.conquestBatle(Cnq.locationSelected);
 	    	
 	    	if(UserX['rivalTerritories'].length == 0){
 	    		 winStage();
@@ -36,6 +36,7 @@ Cnq['onTerritoryClick'] = function(path , group){
 	    	 UserX['localTerritories'].push(path.attrs.id);
 	     }
 	     
+	     if(battle)
 	     Cnq.SendMsg('game message',{userId:UserX['id'], type:'movement', type_move: 'conquer', idTer: Cnq.locationSelected});
 	     
 	     if(UserX['money'] == 0){
@@ -44,9 +45,9 @@ Cnq['onTerritoryClick'] = function(path , group){
 	     Risk.topLayer.drawScene();
 	}else{
 		if(!Cnq.terIsNeighbour(path.attrs.id)){
-			alert("Seleccione un territorio valido!");
+			Cnq.Notify("Error", "Seleccione un territorio Valido", "error");
 		}else{
-			alert("No money!");
+			Cnq.Notify("No Money", "No te queda dinero!", "info");
 		}
 	}
 	
@@ -121,7 +122,6 @@ Cnq.Router = function(msgAux){
 		}else if (msg.type === 'new_Turno' && msg.userId == UserX.rivalId){
 			readyState('Tu turno...', 'Continuar');
 			Cnq.calculateMoney();
-			Cnq.reloadMoneyValue();
 		}else if(msg.type === 'init_game'){
 			//Pintar Territorios
 			Cnq.paintFirtStep(msg.idFirstPlayer == UserX.id, msg);
@@ -289,8 +289,14 @@ Cnq.reloadMoneyValue = function () {
 }
 
 Cnq.calculateMoney = function(){
-	UserX['money'] =  UserX.localTerritories.length;
-//	return UserX['money'];
+	if(UserX.localTerritories.length <8){
+		UserX['money'] =  UserX.localTerritories.length;
+	}else if(UserX.localTerritories.length < 16){
+		UserX['money'] =  Math.floor(UserX.localTerritories.length/2);
+	}else{
+		UserX['money'] =  Math.floor(UserX.localTerritories.length/2.6);
+	}
+	$('#moneyValue')[0].innerHTML = UserX.money;
 }
 
 Cnq.stopBlink = function(){
@@ -316,18 +322,30 @@ Cnq.movementRouter = function (msg){
 }
 
 Cnq.conquestBatle = function (id){
-	var atack = getRandomInt(0,10);
-	var deff = getRandomInt(0,5);
+	var atack = getRandomInt(0,11);
+	var deff = getRandomInt(0,4);
 	console.log("ATAC = " +atack + " DEFF = "+  deff);
 	
 	if(atack > deff){
 		remove( UserX['rivalTerritories'], Cnq.locationSelected);
 		UserX['localTerritories'].push(id);
 		Cnq.pintarLocal(id);
+		Cnq.Notify("Conquista", "Has conquistado un territorio", "succes");
+		return true;
 	}else{
 		var money = Math.floor(UserX['money'] /3);
 		UserX['money']  = money;
-		alert("Defend WINS");
+		Cnq.Notify("Derrota", "Has perdido la batalla", "error");
+		return false;
 	}
-	
+}
+
+
+Cnq.Notify = function (title , body ,type ){
+	new PNotify({
+		 title : title,
+	     text : body,
+	     type :type
+	     
+	});
 }
