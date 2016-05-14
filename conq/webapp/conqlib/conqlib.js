@@ -1,5 +1,5 @@
 /**
- * 
+ * CNQ CORE 2016 -- Jesus Juan Aguilar
  */
 
 var UserX = {};
@@ -8,7 +8,6 @@ UserX['money'] = 1;
 UserX['rivalId'] = null;
 UserX['localTerritories'] = [];
 UserX['rivalTerritories'] = [];
-UserX['']
 
 var Cnq = {};
 Cnq['locationSelected'] = "";
@@ -17,6 +16,11 @@ Cnq['blink'] = null;
 Cnq['onTerritoryClick'] = function(path , group){
 	var battle = true;
 	if(UserX['money'] > 0 && Cnq.terIsNeighbour(path.attrs.id)){
+		if(Cnq.terIsLocal(path.attrs.id)){
+			loadUserCenter();
+			return; 
+		}
+		
 		UserX['money'] --;
 		
 		location.hash = path.attrs.id;
@@ -44,6 +48,10 @@ Cnq['onTerritoryClick'] = function(path , group){
 	     }
 	     Risk.topLayer.drawScene();
 	}else{
+		if(Cnq.terIsLocal(path.attrs.id)){
+			loadUserCenter();
+			return; 
+		}
 		if(!Cnq.terIsNeighbour(path.attrs.id)){
 			Cnq.Notify("Error", "Seleccione un territorio Valido", "error");
 		}else{

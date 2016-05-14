@@ -46,6 +46,20 @@ function loseStage(){
 	$('#modalMesage')[0].innerHTML= "<center><p>DERROTA</p></center>";
 }
 
+
+function loadUserCenter(){
+	 maskGame();
+	var menu = "<center> <div><table style='width:100%'><tr>" +
+			"<td><button class='btnBul' onclick=''/> Bank </button></td>" +
+			"<td><button class='btnBul' onclick=''/> Tower </button></td>" +
+			"<td><button class='btnBul' onclick=''/> Totem </button> </td>" +
+			"<tr><td class='numbertitle'>2</td><td class='numbertitle'>3</td><td class='numbertitle'>4</td></tr>" +
+			"</tr></table></div></center> ";
+	
+	$('#closeHtm')[0].innerHTML= '<a id="closableIcon" href="#close" title="Close" class="close" style="visibility: visible;">X</a>';
+   $('#modalMesage')[0].innerHTML= menu;
+}
+
 /*UTILS*/
 
 function remove(arr, what) {
