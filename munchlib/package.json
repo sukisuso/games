@@ -1,0 +1,17 @@
+{
+  "name": "munchlib",
+  "version": "0.0.0",
+  "description": "Card game",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Jesus Juan Aguilar <jesusjuanaguilar@gmail.com> (https://twitter.com/JesusJuAg)",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "1.15.2",
+    "bulma": "0.1.2",
+    "express": "4.14.0",
+    "helmet": "2.1.2"
+  }
+}
